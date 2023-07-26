@@ -1,29 +1,29 @@
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship, mapped_column
+from db.conf_db import Base
 
-Base = declarative_base()
 
-
-class Projects(Base):
-    __tablename__ = 'projects'
+class Project(Base):
+    __tablename__ = 'project'
     id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
     deskription = Column(String(length=4000))
-    tasks = relationship('Tasks', back_populates="projects")
+    tasks = relationship('Task', back_populates="projects")
 
 
-class Tasks(Base):
-    __tablename__ = 'tasks'
+class Task(Base):
+    __tablename__ = 'task'
     id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(length=70))
     content = Column(String(length=4000))
-    project_id = mapped_column(ForeignKey('projects.id'))
-    projects = relationship('Projects', back_populates="tasks")
+    project_id = mapped_column(ForeignKey('project.id'))
+    projects = relationship('Project', back_populates="tasks")
 
 
-class Users(Base):
-    __tablename__ = "users"
+class User(Base):
+    __tablename__ = "user"
     id = Column(Integer, primary_key=True, index=True)
-    first_name = Column(String)
-    last_name = Column(String)
-    password = Column(String)
-    email = Column(String, index=True)
+    first_name = Column(String, nullable=True)
+    last_name = Column(String, nullable=True)
+    password = Column(String, nullable=False)
+    email = Column(String, index=True, nullable=False)

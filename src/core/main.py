@@ -1,5 +1,3 @@
-from typing import Union
-
 from fastapi import FastAPI, APIRouter
 from api.users import router as user_router
 from api.tasks import router as task_router
@@ -12,12 +10,4 @@ main_router.include_router(project_router, prefix='/project', tags=['project'])
 
 app = FastAPI()
 
-
-@app.get("/")
-def read_root() -> dict:
-    return {"Hello": "World"}
-
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None) -> dict:
-    return {"item_id": item_id, "q": q}
+app.include_router(main_router)
