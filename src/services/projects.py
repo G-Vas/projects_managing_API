@@ -4,6 +4,7 @@ from repositories.base import IRepository
 from models.models import Project
 from schemas.projects import CreateProjectSchema
 
+
 class ProjectService:
 
     repo: IRepository
@@ -25,14 +26,14 @@ class ProjectService:
                 detail='the range exceeds the allowable limits'
             )
         return projects
-    
+
     async def get_project_by_id(self, project_id: int) -> Project:
         try:
             project = await self.repo.get_detail(id=project_id)
         except exceptions.ObjectDoesNotExist:
             raise HTTPException(status_code=404, detail=f'project with id:{project_id} does not exist')
         return project
-    
+
     async def delete_project(self, id: int) -> dict:
         try:
             response = await self.repo.delete(id=id)

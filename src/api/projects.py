@@ -1,11 +1,12 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from db.conf_db import get_db
 from repositories.projects import ProjectRepository
 from models.models import Project
 from schemas.projects import ProjectSchema, CreateProjectSchema, ProjectDetailSchema, DeleteProjectSchema
 from services.projects import ProjectService
+
 router = APIRouter()
 
 
