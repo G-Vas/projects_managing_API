@@ -21,10 +21,7 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     expose:
       - 5432:5432
-    environment:
-      - POSTGRES_USER=fastapi_traefik
-      - POSTGRES_PASSWORD=fastapi_traefik
-      - POSTGRES_DB=fastapi_traefik
-
+    env_file:
+      - src/.env
 volumes:
   postgres_data:
