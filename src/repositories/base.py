@@ -39,8 +39,8 @@ class SQLAlchemyRepository(IRepository):
             raise exceptions.ObjectDoesNotExist()
 
         q = select(self.model).where(self.model.id == id)
-        task = await self.db.execute(q)
-        return task.scalar_one()
+        res = await self.db.execute(q)
+        return res.scalar_one()
 
     async def delete(self, id: int) -> dict:
 
@@ -56,6 +56,6 @@ class SQLAlchemyRepository(IRepository):
         objects_count = await self.db.execute(
             select(func.count("id")).select_from(self.model).where(self.model.id == id)
         )
-        if objects_count.scalar() < 1:
+        if objects_count.scalar() == 0:
             return False
         return True
