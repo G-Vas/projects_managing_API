@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Annotated
 from db.conf_db import get_db
-from repositories.project import ProjectRepository
+from repositories.projects import ProjectRepository
 from models.models import Project
 from schemas.projects import ProjectSchema, CreateProjectSchema, ProjectDetailSchema, DeleteProjectSchema
 import core.exceptions as exceptions

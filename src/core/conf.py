@@ -3,9 +3,15 @@ import os
 
 load_dotenv()
 
-DB_USER = os.environ.get('DB_USER')
-DB_PASWORD = os.environ.get('DB_PASWORD')
+#DB conf
+POSTGRES_USER = os.environ.get('POSTGRES_USER')
+POSTGRES_PASSWORD = os.environ.get('POSTGRES_PASSWORD')
 DB_HOST = os.environ.get('DB_HOST')
-DB_NAME = os.environ.get('DB_NAME')
+POSTGRES_DB = os.environ.get('POSTGRES_DB')
 
-DATABASE_URL = f'postgresql+asyncpg://{DB_USER}:{DB_PASWORD}@{DB_HOST}:5432/{DB_NAME}'
+DATABASE_URL = f'postgresql+asyncpg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{DB_HOST}:5432/{POSTGRES_DB}'
+
+#Auth conf
+SECRET_KEY = os.environ.get("SECRET_KEY")
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
