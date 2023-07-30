@@ -1,9 +1,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from models.models import Project
 from sqlalchemy import select, desc
 from sqlalchemy.orm import joinedload
-import core.exceptions as exceptions
+from models.models import Project
 from .base import SQLAlchemyRepository
+import core.exceptions as exceptions
 
 
 class ProjectRepository(SQLAlchemyRepository):
@@ -25,7 +25,7 @@ class ProjectRepository(SQLAlchemyRepository):
         res = projects.scalars().unique().all()
         return res
 
-    async def get_detail(self, id: int):
+    async def get_detail(self, id: int) -> Project:
 
         if not await self.object_is_exist(id=id):
             raise exceptions.ObjectDoesNotExist()

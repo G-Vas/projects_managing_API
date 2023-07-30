@@ -1,12 +1,12 @@
 from pydantic import BaseModel
 
 
-class User(BaseModel):
+class UserSchema(BaseModel):
     email: str
     first_name: str | None = None
     last_name: str | None = None
 
 
-class UserInDB(User):
+class UserInDBSchema(UserSchema):
     pass
     password: str
