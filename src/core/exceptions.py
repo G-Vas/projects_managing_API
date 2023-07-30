@@ -1,5 +1,6 @@
 from fastapi import HTTPException
 
+
 class ObjectDoesNotExist(Exception):
     pass
 

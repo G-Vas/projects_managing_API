@@ -15,4 +15,5 @@ class TaskRepository(SQLAlchemyRepository):
         q = select(self.model).where(Task.project_id == proj_id)
         tasks = await self.db.execute(q)
         res = tasks.scalars()
+
         return res

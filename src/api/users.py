@@ -1,30 +1,23 @@
 from datetime import timedelta
-from typing import Annotated, Union
 from typing_extensions import Annotated
-
 from fastapi import APIRouter
 from fastapi import Depends, HTTPException, status
-from fastapi.param_functions import Form
 from fastapi.security import OAuth2PasswordRequestForm
-
 from services.auth import AuthService, oauth2_scheme
 from core.conf import ACCESS_TOKEN_EXPIRE_MINUTES
-from schemas.users import User, UserInDB
-from schemas.token import Token
+from schemas.users import UserSchema, UserInDBSchema
+from schemas.token import TokenSchema
 from repositories.users import UserRepository
-
 from sqlalchemy.ext.asyncio import AsyncSession
 from db.conf_db import get_db
-
+from models.models import User
 
 router = APIRouter()
 
 
-@router.post("/token", response_model=Token)
-async def login_for_access_token(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
-    db: Annotated[AsyncSession, Depends(get_db)]
-    ):
+@router.post("/token", response_model=TokenSchema)
+async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+                                 db: Annotated[AsyncSession, Depends(get_db)]) -> dict:
 
     repo = UserRepository(db)
     service = AuthService(repo=repo)
@@ -43,21 +36,17 @@ async def login_for_access_token(
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.get("/users/me", response_model=User)
-async def read_users_me(
-    db: Annotated[AsyncSession, Depends(get_db)],
-    token: Annotated[str, Depends(oauth2_scheme)]
-    ):
+@router.get("/users/me", response_model=UserSchema)
+async def read_users_me(db: Annotated[AsyncSession, Depends(get_db)],
+                        token: Annotated[str, Depends(oauth2_scheme)]) -> User:
     repo = UserRepository(db=db)
     current_user = await AuthService(repo=repo).get_current_user(token=token)
     return current_user
 
 
-@router.post("/add", response_model=User)
-async def add(
-    user: UserInDB,
-    db: Annotated[AsyncSession, Depends(get_db)]
-    ):
+@router.post("/add", response_model=UserSchema)
+async def add(user: UserInDBSchema,
+              db: Annotated[AsyncSession, Depends(get_db)]) -> User:
     repo = UserRepository(db=db)
     service = AuthService(repo=repo)
     response = await service.add_user(user)
