@@ -12,8 +12,8 @@ router = APIRouter()
 
 @router.post('/add', response_model=schemas.TaskSchema)
 async def create_task(task: schemas.CreateTaskSchema, db: Annotated[AsyncSession, Depends(get_db)]) -> Task:
-    repo = TaskService(db=db)
-    response = await TaskService(repo=repo).create_task(project=task)
+    repo = TaskRepository(db=db)
+    response = await TaskService(repo=repo).create_task(task=task)
     return response
 
 
@@ -27,7 +27,5 @@ async def get_tasks_list(project_id: int, db: Annotated[AsyncSession, Depends(ge
 @router.get('/{task_id}', response_model=schemas.TaskSchema)
 async def get_task(task_id: int, db: Annotated[AsyncSession, Depends(get_db)]) -> Task:
     repo = TaskRepository(db=db)
-    resp = await repo.get(id=task_id)
-    if not resp:
-        raise HTTPException(status_code=404, detail="Item not found")
-    return resp
+    response = await TaskService(repo=repo).get_task_by_id(task_id=task_id)
+    return response
